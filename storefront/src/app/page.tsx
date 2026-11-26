@@ -1,69 +1,42 @@
+import Link from "next/link";
 import Image from "next/image";
+import { ArrowLeft, BookOpen, ChevronLeft, Sparkles } from "lucide-react";
+import { BookActions } from "@/components/book-actions";
+import { CategoriesCarousel } from "@/components/categories-carousel";
+import { StoreHeader } from "@/components/store-header";
+import { demoBooks } from "@/lib/demo-books";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="storefront">
+      <div className="announcement"><Sparkles size={14} aria-hidden="true" /><span>تسوّق براحة — الدفع عند الاستلام</span></div>
+      <StoreHeader />
+
+      <section className="home-banner" aria-labelledby="banner-title">
+        <div className="home-banner-art" role="img" aria-label="رسم لكتاب مفتوح وكتب من رفوف">
+          <Image src="/images/rofof-home-banner.svg" alt="" fill priority sizes="100vw" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="home-banner-content shell">
+          <span className="banner-kicker"><Sparkles size={15} /> حكايتك القادمة أقرب مما تتخيل</span>
+          <h1 id="banner-title">في رفوف، لكل قارئ<br /><em>حكاية تشبهه</em></h1>
+          <p>تصفّح كتباً اخترناها بمحبة، وابدأ رحلتك من هنا.</p>
+          <a className="banner-button" href="#books">اكتشف الكتب <ArrowLeft size={17} /></a>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <CategoriesCarousel />
+
+      <section className="featured-section" id="books">
+        <div className="shell">
+          <div className="section-heading"><div><span className="section-kicker">اختيرت بمحبة</span><h2>كتب نرشحها <em>لك</em></h2></div><a className="text-link" href="#books">عرض كل الكتب <ChevronLeft size={17} /></a></div>
+          <div className="books-grid">{demoBooks.map((book) => <article className="book-card" key={book.id}>
+            <div className="book-cover-wrap"><span className="book-tag">{book.tag}</span><div className={`book-cover ${book.cover}`}><span className="cover-top">ROFOF BOOK · قراءة تستحق</span><strong>{book.mark.split("\n").map((line) => <span key={line}>{line}</span>)}</strong><span className="cover-bottom"><i /> طبعة مختارة</span></div><BookActions bookId={book.id} title={book.title} /></div>
+            <div className="book-info"><div className="book-title-row"><h3>{book.title}</h3><span className="book-rating">★ ٤٫٨</span></div><p>{book.author}</p><div className="price-row"><strong>{book.priceLabel} <small>ر.ي</small></strong>{book.oldPriceLabel && <del>{book.oldPriceLabel} ر.ي</del>}</div></div>
+          </article>)}</div>
+        </div>
+      </section>
+
+      <footer className="site-footer" id="footer"><div className="shell footer-main"><Link href="/" className="brand"><span className="brand-mark"><BookOpen size={23} /></span><span className="brand-copy"><strong>رفوف</strong><small>ROFOF BOOK</small></span></Link><p>رفّك الأقرب إلى الحكايات التي تحبها.</p><span>© ٢٠٢٦ رفوف بوك</span></div></footer>
+    </main>
   );
 }

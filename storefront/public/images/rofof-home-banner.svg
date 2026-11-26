@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 620" fill="none">
+  <defs>
+    <linearGradient id="backdrop" x1="160" y1="40" x2="1700" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0d3027"/>
+      <stop offset=".52" stop-color="#1a4836"/>
+      <stop offset="1" stop-color="#315b42"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 420 -690 0 740 70)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b18a48" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#b18a48" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="paper" x1="550" y1="230" x2="1030" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff6df"/>
+      <stop offset="1" stop-color="#d9c79e"/>
+    </linearGradient>
+    <linearGradient id="bookgreen" x1="280" y1="380" x2="870" y2="535" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#24523c"/>
+      <stop offset="1" stop-color="#0d3027"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="350" y1="0" x2="1350" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f0d79b"/>
+      <stop offset="1" stop-color="#b78942"/>
+    </linearGradient>
+    <filter id="shadow" x="230" y="150" width="1050" height="520" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="19"/>
+    </filter>
+    <pattern id="stars" width="88" height="88" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="19" r="1.2" fill="#f1dfb6" fill-opacity=".32"/>
+      <circle cx="67" cy="58" r=".9" fill="#f1dfb6" fill-opacity=".2"/>
+      <path d="M42 10v7m-3.5-3.5h7" stroke="#f1dfb6" stroke-opacity=".16"/>
+    </pattern>
+  </defs>
+  <path fill="url(#backdrop)" d="M0 0h1920v620H0z"/>
+  <path fill="url(#glow)" d="M0 0h1920v620H0z"/>
+  <path fill="url(#stars)" d="M0 0h1920v620H0z"/>
+  <path d="M0 503c311-27 487-21 742 7 316 35 691 39 1178-8v118H0V503Z" fill="#09281f" fill-opacity=".5"/>
+  <path d="M0 510c381-25 645-16 960 16 317 32 653 16 960-18" stroke="#d7b773" stroke-opacity=".32"/>
+
+  <g opacity=".75" stroke="url(#gold)" stroke-width="3" stroke-linecap="round">
+    <path d="M180 519c57-91 82-183 67-283M247 326l-63-35m66-15 58-42m-63 112 66-20m-82 73-61-20m88-81 48 21"/>
+    <path d="M1160 523c48-85 52-169 34-235m-21 161-58-26m77-39 61-42m-72-11-47-34"/>
+  </g>
+  <g fill="#c7d0a0" fill-opacity=".6">
+    <path d="M183 291c-49-23-67-51-57-81 34 11 56 40 57 81Zm72-34c9-44 34-69 73-73 0 35-23 61-73 73Zm-17 82c-49-8-77-28-84-61 39 0 68 20 84 61Zm35 67c18-43 48-63 87-57-9 35-39 55-87 57Z"/>
+    <path d="M1155 311c-38-21-51-47-42-77 28 9 42 36 42 77Zm30 62c24-39 53-53 86-43-14 31-42 45-86 43Zm-34 45c-39-4-62-20-69-49 32-2 56 15 69 49Z"/>
+  </g>
+
+  <ellipse cx="730" cy="493" rx="415" ry="55" fill="#061e17" fill-opacity=".6" filter="url(#shadow)"/>
+
+  <!-- An open, gold-edged book -->
+  <path d="M439 366c90-61 184-75 292-25 103-51 194-37 286 24v116c-96-58-185-68-286-13-107-54-203-44-292 13V366Z" fill="#0b261e" stroke="#c89e52" stroke-width="5"/>
+  <path d="M450 355c91-65 187-73 280-25v128c-99-48-189-38-280 19V355Z" fill="url(#paper)"/>
+  <path d="M730 330c101-49 194-40 276 25v122c-93-57-180-67-276-19V330Z" fill="url(#paper)"/>
+  <path d="M731 333v124" stroke="#a98549" stroke-opacity=".7" stroke-width="3"/>
+  <g stroke="#947b51" stroke-opacity=".47" stroke-width="3" stroke-linecap="round">
+    <path d="m480 371 185-25m-181 45 175-24m-172 43 151-20m-126 42 108-14"/>
+    <path d="m764 346 197 27m-194-6 186 25m-183-5 161 22m-130-1 105 15"/>
+  </g>
+  <path d="M450 356c85-53 170-69 280-25m0 0c96-45 184-40 276 25" stroke="#fff7e6" stroke-opacity=".75" stroke-width="3"/>
+
+  <!-- Stacked clothbound books -->
+  <g stroke="#dab76c" stroke-width="3">
+    <path d="M322 449h344l22 39H302l20-39Z" fill="url(#bookgreen)"/>
+    <path d="M350 411h310l24 35H328l22-35Z" fill="#a9603f"/>
+    <path d="M385 376h278l18 32H367l18-32Z" fill="#183e32"/>
+    <path d="M321 461h346m-322-43h310m-280-31h278" stroke="#f1d897" stroke-opacity=".5"/>
+  </g>
+  <path d="M465 464v18m14-18v18m146-18v18" stroke="#dfbf75" stroke-width="2"/>
+
+  <!-- Small brass bookmark -->
+  <path d="M1023 241c49-80 89-112 120-98-3 46-45 81-120 98Z" fill="url(#gold)"/>
+  <path d="M1022 245c-7 71-23 118-49 146" stroke="#d4ad61" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1124 148c-27 39-59 66-96 88" stroke="#fff2ce" stroke-opacity=".7" stroke-width="3"/>
+
+  <circle cx="1027" cy="119" r="3" fill="#e8cb8f"/>
+  <path d="M1027 105v28m-14-14h28" stroke="#e8cb8f" stroke-opacity=".72"/>
+</svg>
