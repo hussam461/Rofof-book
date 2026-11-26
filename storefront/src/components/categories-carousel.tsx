@@ -44,11 +44,8 @@ const pageSize = 12;
 
 export function CategoriesCarousel() {
   const [page, setPage] = useState(0);
-  const [showAll, setShowAll] = useState(false);
   const pageCount = Math.ceil(categories.length / pageSize);
-  const visibleCategories = showAll
-    ? categories
-    : categories.slice(page * pageSize, (page + 1) * pageSize);
+  const visibleCategories = categories.slice(page * pageSize, (page + 1) * pageSize);
 
   return (
     <section className="category-section shell" id="categories" aria-labelledby="categories-heading">
@@ -59,17 +56,18 @@ export function CategoriesCarousel() {
       </div>
 
       <div className="category-grid-shell">
-        {!showAll && pageCount > 1 && (
-          <div className="carousel-controls category-controls">
-            <button type="button" onClick={() => setPage((current) => Math.max(current - 1, 0))} aria-label="التصنيفات السابقة" disabled={page === 0}>
-              <ArrowRight size={17} />
-            </button>
-            <span aria-live="polite">{page + 1} / {pageCount}</span>
-            <button type="button" onClick={() => setPage((current) => Math.min(current + 1, pageCount - 1))} aria-label="التصنيفات التالية" disabled={page === pageCount - 1}>
-              <ArrowLeft size={17} />
-            </button>
-          </div>
-        )}
+        <div className="category-toolbar">
+          {pageCount > 1 ? (
+            <div className="carousel-controls category-controls" aria-label="التنقل بين صفحات الأقسام">
+              <button type="button" onClick={() => setPage((current) => Math.min(current + 1, pageCount - 1))} aria-label="التصنيفات التالية" disabled={page === pageCount - 1}>
+                <ArrowLeft size={17} />
+              </button>
+              <button type="button" onClick={() => setPage((current) => Math.max(current - 1, 0))} aria-label="التصنيفات السابقة" disabled={page === 0}>
+                <ArrowRight size={17} />
+              </button>
+            </div>
+          ) : <span />}
+        </div>
 
         <div className="category-grid">
           {visibleCategories.map(({ name, icon: Icon }, index) => (
@@ -82,17 +80,6 @@ export function CategoriesCarousel() {
             </a>
           ))}
         </div>
-
-        {pageCount > 1 && (
-          <div className="all-categories-divider">
-            <span />
-            <button type="button" onClick={() => { setShowAll((current) => !current); setPage(0); }}>
-              {showAll ? "عرض الأقسام المختارة" : "عرض جميع الأقسام"}
-              <ArrowLeft size={15} aria-hidden="true" />
-            </button>
-            <span />
-          </div>
-        )}
       </div>
     </section>
   );

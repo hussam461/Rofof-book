@@ -1,13 +1,16 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
 
 export type CartLine = { bookId: string; quantity: number };
+export type CartNotice = { bookId: string; id: number };
 
 type StoreContextValue = {
   cart: CartLine[];
   favorites: string[];
+  cartNotice: CartNotice | null;
   addToCart: (bookId: string) => void;
+  dismissCartNotice: () => void;
   toggleFavorite: (bookId: string) => void;
   updateQuantity: (bookId: string, quantity: number) => void;
 };
@@ -17,6 +20,8 @@ const StoreContext = createContext<StoreContextValue | null>(null);
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartLine[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [cartNotice, setCartNotice] = useState<CartNotice | null>(null);
+  const noticeId = useRef(0);
 
   function addToCart(bookId: string) {
     setCart((current) => {
@@ -25,7 +30,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         ? current.map((line) => line.bookId === bookId ? { ...line, quantity: line.quantity + 1 } : line)
         : [...current, { bookId, quantity: 1 }];
     });
+    noticeId.current += 1;
+    setCartNotice({ bookId, id: noticeId.current });
   }
+
+  const dismissCartNotice = useCallback(() => setCartNotice(null), []);
 
   function toggleFavorite(bookId: string) {
     setFavorites((current) => current.includes(bookId)
@@ -40,7 +49,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <StoreContext.Provider value={{ cart, favorites, addToCart, toggleFavorite, updateQuantity }}>
+    <StoreContext.Provider value={{ cart, favorites, cartNotice, addToCart, dismissCartNotice, toggleFavorite, updateQuantity }}>
       {children}
     </StoreContext.Provider>
   );

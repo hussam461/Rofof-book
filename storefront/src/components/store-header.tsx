@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
-import { ArrowLeft, BookOpen, Heart, Menu, Minus, Plus, Search, ShoppingBag, Trash2, X } from "lucide-react";
+import { ArrowLeft, BookOpen, Heart, Menu, Minus, Plus, Search, ShoppingCart, Trash2, X } from "lucide-react";
 import { demoBooks } from "@/lib/demo-books";
 import { useStore } from "@/components/store-provider";
 
@@ -18,6 +18,11 @@ export function StoreHeader() {
   const [panel, setPanel] = useState<Panel>(null);
   const [panelPosition, setPanelPosition] = useState({ top: 0, right: 16, maxHeight: 540 });
   const [menuOpen, setMenuOpen] = useState(false);
+  const panelRef = useRef<HTMLElement>(null);
+  const favoritesButtonRef = useRef<HTMLButtonElement>(null);
+  const cartButtonRef = useRef<HTMLButtonElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const navigationRef = useRef<HTMLElement>(null);
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce((sum, item) => {
     const book = demoBooks.find((candidate) => candidate.id === item.bookId);
@@ -32,6 +37,34 @@ export function StoreHeader() {
       const book = demoBooks.find((candidate) => candidate.id === bookId);
       return book ? [{ book, quantity: 1 }] : [];
     });
+
+  useEffect(() => {
+    function handlePointerDown(event: PointerEvent) {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+
+      const clickedPanel = panelRef.current?.contains(target) ?? false;
+      const clickedTrigger = favoritesButtonRef.current?.contains(target) || cartButtonRef.current?.contains(target);
+      if (panel && !clickedPanel && !clickedTrigger) setPanel(null);
+
+      const clickedMenu = menuButtonRef.current?.contains(target) || navigationRef.current?.contains(target);
+      if (menuOpen && !clickedMenu) setMenuOpen(false);
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setPanel(null);
+        setMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen, panel]);
 
   function togglePanel(nextPanel: Exclude<Panel, null>, event: MouseEvent<HTMLButtonElement>) {
     if (panel === nextPanel) {
@@ -55,7 +88,7 @@ export function StoreHeader() {
   return (
     <header className="site-header">
       <div className="header-main shell">
-        <button className="mobile-nav-toggle" type="button" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? "إغلاق القائمة" : "فتح القائمة"} aria-expanded={menuOpen} aria-controls="main-navigation">
+        <button className="mobile-nav-toggle" ref={menuButtonRef} type="button" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? "إغلاق القائمة" : "فتح القائمة"} aria-expanded={menuOpen} aria-controls="main-navigation">
           {menuOpen ? <X size={19} /> : <Menu size={19} />}
         </button>
 
@@ -64,7 +97,7 @@ export function StoreHeader() {
           <span className="brand-copy"><strong>رفوف</strong><small>ROFOF BOOK</small></span>
         </Link>
 
-        <nav className={`main-navigation${menuOpen ? " is-open" : ""}`} id="main-navigation" aria-label="التنقل الرئيسي">
+        <nav className={`main-navigation${menuOpen ? " is-open" : ""}`} ref={navigationRef} id="main-navigation" aria-label="التنقل الرئيسي">
           <Link className="nav-active" href="/">الرئيسية</Link>
           <Link href="#categories" onClick={() => setMenuOpen(false)}>أقسام الكتب</Link>
           <Link href="#books" onClick={() => setMenuOpen(false)}>الأكثر مبيعاً</Link>
@@ -74,22 +107,22 @@ export function StoreHeader() {
 
         <form className="search-box" action="/" role="search">
           <label className="sr-only" htmlFor="book-search">ابحث عن كتاب أو مؤلف</label>
-          <input id="book-search" name="q" placeholder="ابحث عن كتاب، مؤلف أو تصنيف..." />
+          <input className="store-search-input" id="book-search" name="q" type="search" autoComplete="off" placeholder="ابحث عن كتاب، مؤلف أو تصنيف..." />
           <button type="submit" aria-label="ابحث"><Search size={18} /></button>
         </form>
 
         <div className="header-actions">
-          <button className={`favorite-trigger${panel === "favorites" ? " is-active" : ""}`} type="button" onClick={(event) => togglePanel("favorites", event)} aria-label={`المفضلة، ${favorites.length} كتب`} aria-expanded={panel === "favorites"} aria-controls="store-popover">
+          <button className={`favorite-trigger${panel === "favorites" ? " is-active" : ""}`} ref={favoritesButtonRef} type="button" onClick={(event) => togglePanel("favorites", event)} aria-label={`المفضلة، ${favorites.length} كتب`} aria-expanded={panel === "favorites"} aria-controls="store-popover">
             <Heart size={22} fill={favorites.length ? "currentColor" : "none"} />
             {favorites.length > 0 && <span className="header-count">{favorites.length}</span>}
           </button>
-          <button className={`cart-button${panel === "cart" ? " is-active" : ""}`} type="button" onClick={(event) => togglePanel("cart", event)} aria-label={`السلة، ${formatPrice(cartTotal)}`} aria-expanded={panel === "cart"} aria-controls="store-popover">
-            <span className="cart-icon"><ShoppingBag size={21} />{cartCount > 0 && <i>{cartCount}</i>}</span>
+          <button id="store-cart-trigger" className={`cart-button${panel === "cart" ? " is-active" : ""}`} ref={cartButtonRef} type="button" onClick={(event) => togglePanel("cart", event)} aria-label={`السلة، ${formatPrice(cartTotal)}`} aria-expanded={panel === "cart"} aria-controls="store-popover">
+            <span className="cart-icon"><ShoppingCart size={21} />{cartCount > 0 && <i>{cartCount}</i>}</span>
             <span className="cart-total">{formatPrice(cartTotal)}</span>
           </button>
 
           {panel && (
-            <aside className="store-popover" id="store-popover" style={{ top: panelPosition.top, right: panelPosition.right, maxHeight: panelPosition.maxHeight }} aria-label={panel === "cart" ? "سلة التسوق" : "قائمة الرغبات"}>
+            <aside className="store-popover" id="store-popover" ref={panelRef} style={{ top: panelPosition.top, right: panelPosition.right, maxHeight: panelPosition.maxHeight }} aria-label={panel === "cart" ? "سلة التسوق" : "قائمة الرغبات"}>
             <div className="store-popover-heading">
               <div><span>{panel === "cart" ? "سلة التسوق" : "قائمة الرغبات"}</span><small>{panelBooks.length ? `${panelBooks.length} كتب` : "رفوفك تنتظر كتاباً"}</small></div>
               <button className="popover-close" type="button" onClick={() => setPanel(null)} aria-label="إغلاق"><X size={19} /></button>
