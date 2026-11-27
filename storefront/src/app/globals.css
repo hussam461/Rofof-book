@@ -1086,3 +1086,142 @@
   .book-actions-stack .favorite-book, .book-actions-stack .quick-add { width: 31px; height: 31px; }
   .book-actions-stack .quick-add { top: 37px; }
 }
+
+/* Demo home shelves: several editorial sections that can later be driven by admin data. */
+.shelf-section {
+  padding-block: 42px 50px;
+  border-top: 1px solid #ece5d8;
+}
+.shelf-section--ivory { background: #fffdf7; }
+.shelf-section--sage { background: #f1f5ef; }
+.shelf-section--cream { background: #f7f1e6; }
+.shelf-section .shell { width: min(1180px, calc(100% - 56px)); }
+.shelf-heading { align-items: flex-end; margin-bottom: 26px; }
+.shelf-heading > div { gap: 5px; }
+.shelf-heading h2 { font-size: clamp(23px, 2.4vw, 30px); }
+.shelf-heading p {
+  max-width: 450px;
+  margin: 0;
+  color: #718078;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.shelf-section .books-grid { margin-inline: auto; }
+
+@media (max-width: 600px) {
+  .shelf-section { padding-block: 31px 38px; }
+  .shelf-section .shell { width: calc(100% - 32px); }
+  .shelf-heading { align-items: flex-start; gap: 13px; margin-bottom: 18px; }
+  .shelf-heading h2 { font-size: 21px; }
+  .shelf-heading p { max-width: 265px; font-size: 9px; }
+  .shelf-heading .text-link { flex: 0 0 auto; padding-top: 6px; }
+}
+
+/* Demo literary taxonomy inspired by the reference site's circular category row. */
+.literary-genres {
+  padding-block: 48px 42px;
+  background: #f6f2e8;
+  border-top: 1px solid #eee8dc;
+}
+.literary-genres-heading { margin-bottom: 28px; text-align: center; }
+.literary-genres-heading h2 {
+  margin: 6px 0 4px;
+  color: #243a2f;
+  font-size: clamp(24px, 2.4vw, 31px);
+  font-weight: 850;
+  letter-spacing: -.04em;
+}
+.literary-genres-heading h2 em { color: #2f684a; font-style: normal; }
+.literary-genres-heading p { margin: 0; color: #78857d; font-size: 11px; }
+.literary-genres-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 940px;
+  margin-inline: auto;
+}
+.literary-genre {
+  position: relative;
+  display: flex;
+  min-height: 194px;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  padding: 11px 10px 10px;
+  overflow: hidden;
+  border: 1px solid #e9dfcc;
+  border-radius: 22px;
+  background: #fffdf7;
+  color: #34483d;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 5px 14px #42371a0c, inset 0 1px 0 #ffffff;
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+.literary-genre:hover { transform: translateY(-4px); border-color: #c8a15d; box-shadow: 0 12px 22px #42371a17; }
+.literary-genre-medallion {
+  display: grid;
+  width: 126px;
+  aspect-ratio: 1;
+  place-items: center;
+  overflow: hidden;
+  border: 5px solid #f4eee1;
+  border-radius: 50%;
+  color: #e6c477;
+  background: radial-gradient(circle at 35% 28%, #225743, #103c2e 73%);
+  box-shadow: 0 0 0 1px #ddc796, 0 6px 13px #253b2c22;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.literary-genre:hover .literary-genre-medallion,
+.literary-genre:focus-visible .literary-genre-medallion {
+  transform: scale(1.035);
+  box-shadow: 0 0 0 1px #ba8c43, 0 8px 17px #253b2c30;
+}
+.genre-korea { background: radial-gradient(circle at 35% 25%, #4b805c, transparent 22%), linear-gradient(145deg, #2d6545, #103c2e); }
+.genre-britain { background: radial-gradient(circle at 65% 30%, #5b8963, transparent 22%), linear-gradient(145deg, #326b4a, #123f30); }
+.genre-france { background: radial-gradient(circle at 55% 22%, #6b9064, transparent 20%), linear-gradient(145deg, #2f684a, #103b2d); }
+.genre-russia { background: radial-gradient(circle at 38% 27%, #527f5b, transparent 21%), linear-gradient(145deg, #2c6243, #10382c); }
+.genre-spain { background: radial-gradient(circle at 62% 25%, #6b9568, transparent 20%), linear-gradient(145deg, #326b4a, #123e2f); }
+.genre-america { background: radial-gradient(circle at 60% 24%, #4b805c, transparent 22%), linear-gradient(145deg, #2d6545, #103c2e); }
+.literary-genre-bottom {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 31px;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 24px;
+}
+.literary-genre-name { color: #173e2f; line-height: 1.5; }
+.literary-genre-arrow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: 50%;
+  background: #d3a251;
+  color: #fffdf7;
+  transition: transform .2s ease, background .2s ease;
+}
+.literary-genre:hover .literary-genre-arrow { transform: translateX(-3px); background: #b88436; }
+
+@media (max-width: 900px) {
+  .literary-genres-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 620px; row-gap: 25px; }
+}
+@media (max-width: 600px) {
+  .literary-genres { padding-block: 35px 30px; }
+  .literary-genres-heading { margin-bottom: 21px; }
+  .literary-genres-heading h2 { font-size: 23px; }
+  .literary-genres-heading p { font-size: 10px; }
+  .literary-genres-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 9px; }
+  .literary-genre { min-height: 152px; gap: 8px; padding: 9px 7px; border-radius: 17px; font-size: 9px; }
+  .literary-genre-medallion { width: min(92px, 25vw); border-width: 3px; }
+  .literary-genre-medallion svg { width: 37px; height: 37px; }
+  .literary-genre-bottom { min-height: 27px; padding-inline: 18px; }
+  .literary-genre-arrow { width: 22px; height: 22px; }
+}
