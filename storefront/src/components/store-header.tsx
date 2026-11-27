@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import { ArrowLeft, BookOpen, Heart, Menu, Minus, Plus, Search, ShoppingCart, Trash2, X } from "lucide-react";
-import { demoBooks } from "@/lib/demo-books";
+import { allBooks } from "@/lib/books";
 import { useStore } from "@/components/store-provider";
 
 type Panel = "cart" | "favorites" | null;
@@ -25,16 +25,16 @@ export function StoreHeader() {
   const navigationRef = useRef<HTMLElement>(null);
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce((sum, item) => {
-    const book = demoBooks.find((candidate) => candidate.id === item.bookId);
+    const book = allBooks.find((candidate) => candidate.id === item.bookId);
     return sum + (book?.price ?? 0) * item.quantity;
   }, 0);
   const panelBooks = panel === "cart"
     ? cart.flatMap((item) => {
-      const book = demoBooks.find((candidate) => candidate.id === item.bookId);
+      const book = allBooks.find((candidate) => candidate.id === item.bookId);
       return book ? [{ book, quantity: item.quantity }] : [];
     })
     : favorites.flatMap((bookId) => {
-      const book = demoBooks.find((candidate) => candidate.id === bookId);
+      const book = allBooks.find((candidate) => candidate.id === bookId);
       return book ? [{ book, quantity: 1 }] : [];
     });
 

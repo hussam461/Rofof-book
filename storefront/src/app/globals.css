@@ -768,19 +768,19 @@
 
 /* Minimal product layout inspired by the supplied bookstore reference. */
 .featured-section { padding-block: 36px 56px; background: #fff; }
-.featured-section > .shell { width: min(1500px, calc(100% - 80px)); }
+.featured-section > .shell { width: min(1180px, calc(100% - 56px)); }
 .featured-section .section-heading { margin-bottom: 24px; }
 .books-grid {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   justify-content: center;
-  gap: 35px 32px;
+  gap: 35px 40px;
 }
 .book-card {
-  min-width: 150px;
-  max-width: 220px;
-  flex: 0 1 calc((100% - 160px) / 6);
+  width: 100%;
+  min-width: 0;
+  max-width: none;
   overflow: visible;
   border: 0;
   border-radius: 0;
@@ -793,7 +793,7 @@
 .book-cover-wrap {
   width: 100%;
   height: auto;
-  aspect-ratio: .68;
+  aspect-ratio: .67;
   overflow: hidden;
   background: #f3f0e8;
 }
@@ -881,15 +881,18 @@
 }
 .book-actions .favorite-book { color: #b04b4b; }
 .book-actions .quick-add:hover, .book-actions .quick-add.is-added { background: #1b5138; color: #fff; }
-@media (max-width: 900px) {
-  .featured-section > .shell { width: min(calc(100% - 40px), 760px); }
-  .book-card { flex-basis: calc((100% - 96px) / 4); }
-  .books-grid { gap: 28px 24px; }
+@media (min-width: 1200px) and (max-width: 1530px) {
+  .books-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 32px clamp(22px, 2.3vw, 36px); }
+  .book-card { max-width: 210px; justify-self: center; }
+}
+@media (min-width: 601px) and (max-width: 1199px) {
+  .books-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 24px; }
+  .book-card { max-width: 210px; justify-self: center; }
 }
 @media (max-width: 600px) {
   .featured-section { padding-block: 30px 40px; }
   .featured-section > .shell { width: calc(100% - 32px); }
-  .books-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 14px; }
+  .books-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 14px; }
   .book-card { width: 100%; min-width: 0; max-width: none; }
   .book-cover-wrap { aspect-ratio: .7; }
   .book-cover { padding: 12px 9px; }
@@ -1016,6 +1019,36 @@
   .action-tooltip { transition: none; }
 }
 
+/* Reference-style book hover: slowly enlarge only the cover inside its frame. */
+.book-cover-wrap::before {
+  display: none;
+}
+.book-cover-wrap .book-cover,
+.book-cover-wrap .literary-cover-image {
+  transform-origin: center;
+  transition: transform 3.5s cubic-bezier(.2, .65, .25, 1);
+}
+.book-cover-wrap:hover .book-cover,
+.book-cover-wrap:focus-within .book-cover,
+.book-cover-wrap:hover .literary-cover-image,
+.book-cover-wrap:focus-within .literary-cover-image {
+  filter: none !important;
+  transform: scale(1.1);
+}
+.book-cover-wrap .book-actions {
+  z-index: 2;
+}
+
+@media (hover: none), (max-width: 600px) {
+  .book-cover-wrap:hover .book-cover,
+  .book-cover-wrap:focus-within .book-cover,
+  .book-cover-wrap:hover .literary-cover-image,
+  .book-cover-wrap:focus-within .literary-cover-image {
+    filter: none;
+    transform: none;
+  }
+}
+
 /* Pin both cover actions to one x coordinate instead of relying on flex/grid order. */
 .book-actions.book-actions-stack {
   display: block;
@@ -1034,6 +1067,20 @@
 }
 .book-actions-stack .favorite-book { top: 0; bottom: auto; order: initial; }
 .book-actions-stack .quick-add { top: 45px; bottom: auto; order: initial; }
+.book-actions-stack .favorite-book,
+.book-actions-stack .quick-add {
+  border-color: transparent;
+  background: transparent !important;
+  box-shadow: none;
+  backdrop-filter: none;
+  filter: drop-shadow(0 1px 2px #0009);
+}
+.book-actions-stack .favorite-book { color: #fffaf0; }
+.book-actions-stack .favorite-book.is-favorite,
+.book-actions-stack .favorite-book.is-favorite:hover { color: #d94f45; }
+.book-actions-stack .quick-add { color: #fffaf0; }
+.book-actions-stack .favorite-book:hover,
+.book-actions-stack .quick-add:hover { background: transparent !important; color: #e7c16e; }
 @media (max-width: 600px) {
   .book-actions.book-actions-stack { width: 31px; height: 68px; }
   .book-actions-stack .favorite-book, .book-actions-stack .quick-add { width: 31px; height: 31px; }

@@ -6,6 +6,7 @@ import { CartAddedToast } from "@/components/cart-added-toast";
 import { CategoriesCarousel } from "@/components/categories-carousel";
 import { StoreHeader } from "@/components/store-header";
 import { demoBooks } from "@/lib/demo-books";
+import { literaryBooks } from "@/lib/literary-books";
 
 const priceFormatter = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 2,
@@ -43,6 +44,40 @@ export default function Home() {
                   <div className={`book-cover ${book.cover}`} aria-label={`غلاف كتاب ${book.title}`} role="img">
                     <strong>{book.mark.split("\n").map((line) => <span key={line}>{line}</span>)}</strong>
                   </div>
+                  <BookActions bookId={book.id} title={book.title} />
+                </div>
+                <div className="book-info">
+                  <div className="book-title-row"><h3>{book.title}</h3></div>
+                  <span className="book-rating" role="img" aria-label="التقييم ٤٫٨ من ٥">
+                    {Array.from({ length: 5 }, (_, index) => <Star key={index} size={16} strokeWidth={1.8} aria-hidden="true" />)}
+                  </span>
+                  <div className="price-row">
+                    <strong><small>YER</small> {priceFormatter.format(book.price)}</strong>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="featured-section literary-section" aria-labelledby="literary-heading">
+        <div className="shell">
+          <div className="section-heading literary-heading">
+            <div><h2 id="literary-heading">روايات أدبية</h2></div>
+            <a className="text-link" href="#literary-books-grid">عرض الكل <ChevronLeft size={17} /></a>
+          </div>
+          <div className="books-grid literary-books-grid" id="literary-books-grid">
+            {literaryBooks.map((book) => (
+              <article className="book-card" key={book.id}>
+                <div className="book-cover-wrap literary-cover">
+                  <Image
+                    className="literary-cover-image"
+                    src={book.coverImage}
+                    alt={`غلاف ${book.title}`}
+                    fill
+                    sizes="(max-width: 600px) 45vw, (max-width: 900px) 22vw, 16vw"
+                  />
                   <BookActions bookId={book.id} title={book.title} />
                 </div>
                 <div className="book-info">

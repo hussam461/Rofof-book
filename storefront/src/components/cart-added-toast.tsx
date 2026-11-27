@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { BookOpen, Check, X } from "lucide-react";
-import { demoBooks } from "@/lib/demo-books";
+import { allBooks } from "@/lib/books";
 import { useStore } from "@/components/store-provider";
 
 const noticeDuration = 6500;
@@ -13,7 +13,7 @@ function formatPrice(amount: number) {
 
 export function CartAddedToast() {
   const { cartNotice, dismissCartNotice } = useStore();
-  const book = cartNotice ? demoBooks.find((item) => item.id === cartNotice.bookId) : undefined;
+  const book = cartNotice ? allBooks.find((item) => item.id === cartNotice.bookId) : undefined;
   const noticeId = cartNotice?.id;
 
   useEffect(() => {
