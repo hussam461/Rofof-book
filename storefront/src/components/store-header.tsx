@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { MouseEvent } from "react";
 import { ArrowLeft, BookOpen, Heart, Menu, Minus, Plus, Search, ShoppingCart, Trash2, X } from "lucide-react";
 import { allBooks } from "@/lib/books";
@@ -18,7 +19,10 @@ export function StoreHeader() {
   const [panel, setPanel] = useState<Panel>(null);
   const [panelPosition, setPanelPosition] = useState({ top: 0, right: 16, maxHeight: 540 });
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const panelRef = useRef<HTMLElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const favoritesButtonRef = useRef<HTMLButtonElement>(null);
   const cartButtonRef = useRef<HTMLButtonElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -37,6 +41,9 @@ export function StoreHeader() {
       const book = allBooks.find((candidate) => candidate.id === bookId);
       return book ? [{ book, quantity: 1 }] : [];
     });
+  const searchResults = searchQuery.trim()
+    ? allBooks.filter((book) => `${book.title} ${"author" in book ? book.author : ""}`.toLocaleLowerCase("ar").includes(searchQuery.trim().toLocaleLowerCase("ar"))).slice(0, 12)
+    : [];
 
   useEffect(() => {
     function handlePointerDown(event: PointerEvent) {
@@ -55,6 +62,7 @@ export function StoreHeader() {
       if (event.key === "Escape") {
         setPanel(null);
         setMenuOpen(false);
+        setSearchOpen(false);
       }
     }
 
@@ -66,7 +74,16 @@ export function StoreHeader() {
     };
   }, [menuOpen, panel]);
 
+  useEffect(() => {
+    if (!searchOpen) return;
+    searchInputRef.current?.focus();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previousOverflow; };
+  }, [searchOpen]);
+
   function togglePanel(nextPanel: Exclude<Panel, null>, event: MouseEvent<HTMLButtonElement>) {
+    setSearchOpen(false);
     if (panel === nextPanel) {
       setPanel(null);
       return;
@@ -83,6 +100,18 @@ export function StoreHeader() {
       maxHeight: Math.max(160, window.innerHeight - top - 16),
     });
     setPanel(nextPanel);
+  }
+
+  function openSearch() {
+    setPanel(null);
+    setMenuOpen(false);
+    setSearchQuery("");
+    setSearchOpen(true);
+  }
+
+  function submitSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    searchInputRef.current?.blur();
   }
 
   return (
@@ -105,13 +134,10 @@ export function StoreHeader() {
           <Link href="#footer" onClick={() => setMenuOpen(false)}>من نحن</Link>
         </nav>
 
-        <form className="search-box" action="/" role="search">
-          <label className="sr-only" htmlFor="book-search">ابحث عن كتاب أو مؤلف</label>
-          <input className="store-search-input" id="book-search" name="q" type="search" autoComplete="off" placeholder="ابحث عن كتاب، مؤلف أو تصنيف..." />
-          <button type="submit" aria-label="ابحث"><Search size={18} /></button>
-        </form>
-
         <div className="header-actions">
+          <button className={`search-trigger${searchOpen ? " is-active" : ""}`} type="button" onClick={openSearch} aria-label="فتح البحث" aria-expanded={searchOpen} aria-controls="store-search-dialog">
+            <Search size={21} />
+          </button>
           <button className={`favorite-trigger${panel === "favorites" ? " is-active" : ""}`} ref={favoritesButtonRef} type="button" onClick={(event) => togglePanel("favorites", event)} aria-label={`المفضلة، ${favorites.length} كتب`} aria-expanded={panel === "favorites"} aria-controls="store-popover">
             <Heart size={22} fill={favorites.length ? "currentColor" : "none"} />
             {favorites.length > 0 && <span className="header-count">{favorites.length}</span>}
@@ -154,6 +180,56 @@ export function StoreHeader() {
           )}
         </div>
       </div>
+
+      {searchOpen && (
+        <div className="store-search-overlay">
+          <button className="store-search-backdrop" type="button" onClick={() => setSearchOpen(false)} aria-label="إغلاق البحث" />
+          <section className="store-search-dialog" id="store-search-dialog" role="dialog" aria-modal="true" aria-labelledby="store-search-title">
+            <header className="store-search-heading">
+              <button className="store-search-close" type="button" onClick={() => setSearchOpen(false)} aria-label="إغلاق البحث"><X size={24} /></button>
+              <h2 id="store-search-title">ابحث في موقعنا</h2>
+              <span className="store-search-heading-spacer" />
+            </header>
+            <form className="store-search-form" role="search" onSubmit={submitSearch}>
+              <label className="sr-only" htmlFor="store-search-input">ابحث عن كتاب أو مؤلف</label>
+              <input
+                ref={searchInputRef}
+                id="store-search-input"
+                type="search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                autoComplete="off"
+                placeholder="ابحث عن كتاب، مؤلف أو تصنيف..."
+              />
+              <Search size={21} aria-hidden="true" />
+            </form>
+            <div className="store-search-results-heading">
+              <h3>{searchQuery.trim() ? `نتائج البحث (${searchResults.length})` : "نتائج البحث"}</h3>
+              {searchQuery.trim() && searchResults.length === 0 && <p>لم نعثر على كتب مطابقة. جرّب كلمة أخرى.</p>}
+              {!searchQuery.trim() && <p>اكتب اسم كتاب أو مؤلف للعثور عليه.</p>}
+            </div>
+            {searchResults.length > 0 && (
+              <ul className="store-search-results">
+                {searchResults.map((book) => (
+                  <li key={book.id}>
+                    <Link href={`#${"coverImage" in book ? "literary-picks" : "books"}`} onClick={() => setSearchOpen(false)}>
+                      <span className={`store-search-cover ${book.cover}`}>
+                        {"coverImage" in book && book.coverImage ? <Image src={book.coverImage} alt="" fill sizes="64px" /> : <BookOpen size={22} aria-hidden="true" />}
+                      </span>
+                      <span className="store-search-result-info">
+                        <strong>{book.title}</strong>
+                        <small>{"author" in book ? book.author : "متوفر في رفوف"}</small>
+                        <b>{formatPrice(book.price)}</b>
+                      </span>
+                      <ArrowLeft size={17} aria-hidden="true" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
+      )}
     </header>
   );
 }

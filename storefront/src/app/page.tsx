@@ -188,8 +188,10 @@ function BookShelf({
 export default function Home() {
   return (
     <main className="storefront">
-      <div className="announcement"><Sparkles size={14} aria-hidden="true" /><span>تسوّق براحة — الدفع عند الاستلام</span></div>
-      <StoreHeader />
+      <div className="store-topbar">
+        <div className="announcement"><Sparkles size={14} aria-hidden="true" /><span>تسوّق براحة — الدفع عند الاستلام</span></div>
+        <StoreHeader />
+      </div>
       <CartAddedToast />
 
       <section className="home-banner" aria-labelledby="banner-title">
