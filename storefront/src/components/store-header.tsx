@@ -4,7 +4,24 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { MouseEvent } from "react";
-import { ArrowLeft, BookOpen, Heart, Menu, Minus, Plus, Search, ShoppingCart, Trash2, X } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  ChevronDown,
+  CircleHelp,
+  Heart,
+  House,
+  LayoutGrid,
+  Menu,
+  Minus,
+  Plus,
+  Search,
+  ShoppingCart,
+  Tag,
+  TrendingUp,
+  Trash2,
+  X,
+} from "lucide-react";
 import { allBooks } from "@/lib/books";
 import { useStore } from "@/components/store-provider";
 
@@ -26,6 +43,7 @@ export function StoreHeader() {
   const favoritesButtonRef = useRef<HTMLButtonElement>(null);
   const cartButtonRef = useRef<HTMLButtonElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuCloseButtonRef = useRef<HTMLButtonElement>(null);
   const navigationRef = useRef<HTMLElement>(null);
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce((sum, item) => {
@@ -63,6 +81,22 @@ export function StoreHeader() {
         setPanel(null);
         setMenuOpen(false);
         setSearchOpen(false);
+        return;
+      }
+
+      if (event.key === "Tab" && menuOpen) {
+        const focusableElements = navigationRef.current?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])");
+        if (!focusableElements?.length) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
       }
     }
 
@@ -81,6 +115,18 @@ export function StoreHeader() {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = previousOverflow; };
   }, [searchOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const menuButton = menuButtonRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    menuCloseButtonRef.current?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      menuButton?.focus();
+    };
+  }, [menuOpen]);
 
   function togglePanel(nextPanel: Exclude<Panel, null>, event: MouseEvent<HTMLButtonElement>) {
     setSearchOpen(false);
@@ -127,11 +173,54 @@ export function StoreHeader() {
         </Link>
 
         <nav className={`main-navigation${menuOpen ? " is-open" : ""}`} ref={navigationRef} id="main-navigation" aria-label="التنقل الرئيسي">
-          <Link className="nav-active" href="/">الرئيسية</Link>
-          <Link href="#categories" onClick={() => setMenuOpen(false)}>أقسام الكتب</Link>
-          <Link href="#books" onClick={() => setMenuOpen(false)}>الأكثر مبيعاً</Link>
-          <Link href="#books" onClick={() => setMenuOpen(false)}>عروض وخصومات</Link>
-          <Link href="#footer" onClick={() => setMenuOpen(false)}>من نحن</Link>
+          <div className="mobile-menu-header">
+            <Link
+              className="mobile-menu-home"
+              href="/"
+              aria-label="الصفحة الرئيسية"
+              onClick={() => setMenuOpen(false)}
+            >
+              <House size={23} />
+            </Link>
+            <strong>تصفح المتجر</strong>
+            <button
+              ref={menuCloseButtonRef}
+              className="mobile-menu-close"
+              type="button"
+              onClick={() => setMenuOpen(false)}
+              aria-label="إغلاق القائمة"
+            >
+              <X size={23} />
+            </button>
+          </div>
+          <div className="mobile-menu-content">
+            <span className="mobile-menu-section-label">التنقّل</span>
+            <Link className="nav-active" href="/" onClick={() => setMenuOpen(false)}>
+              <span className="mobile-menu-icon"><House size={21} /></span>
+              <span>الرئيسية</span>
+            </Link>
+            <Link href="#categories" onClick={() => setMenuOpen(false)}>
+              <span className="mobile-menu-icon"><LayoutGrid size={21} /></span>
+              <span>أقسام الكتب</span>
+              <ChevronDown className="mobile-menu-chevron" size={17} />
+            </Link>
+            <Link href="#best-sellers" onClick={() => setMenuOpen(false)}>
+              <span className="mobile-menu-icon"><TrendingUp size={21} /></span>
+              <span>الأكثر مبيعاً</span>
+            </Link>
+            <Link href="#books" onClick={() => setMenuOpen(false)}>
+              <span className="mobile-menu-icon"><Tag size={21} /></span>
+              <span>عروض وخصومات</span>
+            </Link>
+            <Link href="#footer" onClick={() => setMenuOpen(false)}>
+              <span className="mobile-menu-icon"><CircleHelp size={21} /></span>
+              <span>من نحن</span>
+            </Link>
+          </div>
+          <div className="mobile-menu-footer">
+            <strong>تسوّق بسهولة</strong>
+            <p>تصفّح منتجاتنا واختر ما يناسبك.</p>
+          </div>
         </nav>
 
         <div className="header-actions">
@@ -180,6 +269,8 @@ export function StoreHeader() {
           )}
         </div>
       </div>
+
+      {menuOpen && <button className="mobile-menu-backdrop" type="button" onClick={() => setMenuOpen(false)} aria-label="إغلاق القائمة" />}
 
       {searchOpen && (
         <div className="store-search-overlay">
