@@ -35,6 +35,27 @@
 .shelf-section .books-grid {
   margin-inline: auto;
 }
+.shelf-carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.shelf-carousel-track {
+  display: flex;
+  align-items: stretch;
+  direction: rtl;
+  transition: transform 480ms cubic-bezier(.22, .61, .36, 1);
+  will-change: transform;
+}
+.shelf-carousel-page {
+  min-width: 0;
+  flex-shrink: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shelf-carousel-track {
+    transition-duration: .01ms;
+  }
+}
 @media (min-width: 901px) {
   .shelf-section .shelf-books-grid--six {
     grid-template-columns: repeat(6, minmax(0, 1fr));

@@ -45,8 +45,10 @@ export function BookShelf({ id, title, accent, description, books, tone }: BookS
     return () => mobileViewport.removeEventListener("change", updateBooksPerPage);
   }, [desktopBooksPerPage]);
 
-  const pageCount = Math.ceil(books.length / booksPerPage);
-  const visibleBooks = books.slice(page * booksPerPage, (page + 1) * booksPerPage);
+  const pageCount = Math.max(1, Math.ceil(books.length / booksPerPage));
+  const pages = Array.from({ length: pageCount }, (_, pageIndex) =>
+    books.slice(pageIndex * booksPerPage, (pageIndex + 1) * booksPerPage),
+  );
 
   function handleTouchEnd(event: TouchEvent<HTMLDivElement>) {
     const startX = touchStartX.current;
@@ -85,41 +87,65 @@ export function BookShelf({ id, title, accent, description, books, tone }: BookS
           </div>
         </div>
         <div
-          className={`books-grid${books.length > 4 ? " shelf-books-grid--six" : ""}`}
+          className="shelf-carousel-viewport"
           id={`${id}-grid`}
+          role="region"
+          aria-label={`كتب ${title}`}
+          aria-roledescription="رف كتب"
           onTouchStart={(event) => { touchStartX.current = event.changedTouches[0]?.clientX ?? null; }}
           onTouchEnd={handleTouchEnd}
           onTouchCancel={() => { touchStartX.current = null; }}
         >
-          {visibleBooks.map((book) => (
-            <article className="book-card" key={`${id}-${book.id}`}>
-              <div className={`book-cover-wrap${book.coverImage ? " literary-cover" : ""}`}>
-                {book.coverImage ? (
-                  <Image
-                    className="literary-cover-image"
-                    src={book.coverImage}
-                    alt={`غلاف ${book.title}`}
-                    fill
-                    sizes="(max-width: 600px) 45vw, (max-width: 900px) 22vw, 16vw"
-                  />
-                ) : (
-                  <div className={`book-cover ${book.cover}`} aria-label={`غلاف كتاب ${book.title}`} role="img">
-                    <strong>{(book.mark ?? book.title).split("\n").map((line) => <span key={line}>{line}</span>)}</strong>
-                  </div>
-                )}
-                <BookActions bookId={book.id} title={book.title} />
+          <div
+            className="shelf-carousel-track"
+            style={{
+              width: `${pageCount * 100}%`,
+              transform: `translateX(${page * (100 / pageCount)}%)`,
+            }}
+          >
+            {pages.map((booksOnPage, pageIndex) => (
+              <div
+                className={`books-grid shelf-carousel-page${books.length > 4 ? " shelf-books-grid--six" : ""}`}
+                key={`${id}-page-${pageIndex}`}
+                style={{ flexBasis: `${100 / pageCount}%` }}
+                aria-hidden={pageIndex !== page}
+                inert={pageIndex !== page}
+                role="group"
+                aria-label={`${pageIndex + 1} من ${pageCount}`}
+                aria-roledescription="صفحة كتب"
+              >
+                {booksOnPage.map((book) => (
+                  <article className="book-card" key={`${id}-${book.id}`}>
+                    <div className={`book-cover-wrap${book.coverImage ? " literary-cover" : ""}`}>
+                      {book.coverImage ? (
+                        <Image
+                          className="literary-cover-image"
+                          src={book.coverImage}
+                          alt={`غلاف ${book.title}`}
+                          fill
+                          sizes="(max-width: 600px) 45vw, (max-width: 900px) 22vw, 16vw"
+                        />
+                      ) : (
+                        <div className={`book-cover ${book.cover}`} aria-label={`غلاف كتاب ${book.title}`} role="img">
+                          <strong>{(book.mark ?? book.title).split("\n").map((line) => <span key={line}>{line}</span>)}</strong>
+                        </div>
+                      )}
+                      <BookActions bookId={book.id} title={book.title} />
+                    </div>
+                    <div className="book-info">
+                      <div className="book-title-row"><h3>{book.title}</h3></div>
+                      <span className="book-rating" role="img" aria-label="التقييم ٤٫٨ من ٥">
+                        {Array.from({ length: 5 }, (_, index) => <Star key={index} size={16} strokeWidth={1.8} aria-hidden="true" />)}
+                      </span>
+                      <div className="price-row">
+                        <strong><small>YER</small> {priceFormatter.format(book.price)}</strong>
+                      </div>
+                    </div>
+                  </article>
+                ))}
               </div>
-              <div className="book-info">
-                <div className="book-title-row"><h3>{book.title}</h3></div>
-                <span className="book-rating" role="img" aria-label="التقييم ٤٫٨ من ٥">
-                  {Array.from({ length: 5 }, (_, index) => <Star key={index} size={16} strokeWidth={1.8} aria-hidden="true" />)}
-                </span>
-                <div className="price-row">
-                  <strong><small>YER</small> {priceFormatter.format(book.price)}</strong>
-                </div>
-              </div>
-            </article>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
