@@ -559,7 +559,7 @@
   border: 1px solid #26372e;
   border-radius: 4px;
   background: #17251d;
-  color: #fffdf7;
+  color: var(--store-surface);
   box-shadow: 0 5px 15px #17261c2b;
   font-family: inherit;
   font-size: 10px;

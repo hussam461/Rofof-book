@@ -156,7 +156,7 @@
   text-decoration: none;
 }
 .store-search-results li > a:hover .store-search-result-info strong {
-  color: #2f684a;
+  color: var(--store-brand);
 }
 .store-search-cover {
   position: relative;

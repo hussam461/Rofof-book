@@ -10,7 +10,7 @@
   color: #d2a753;
 }
 .site-header {
-  background: #fffdf7;
+  background: var(--store-surface);
   border-bottom: 1px solid #e6dfd0;
   position: relative;
   z-index: 30;
@@ -112,7 +112,7 @@
   width: 17px;
   height: 17px;
   place-items: center;
-  border: 2px solid #fffdf7;
+  border: 2px solid var(--store-surface);
   border-radius: 50%;
   background: #bd4d43;
   color: #fff;
@@ -228,7 +228,7 @@
   width: 17px;
   height: 17px;
   place-items: center;
-  border: 2px solid #fffdf7;
+  border: 2px solid var(--store-surface);
   border-radius: 50%;
   background: #bd4d43;
   color: #fff;
@@ -237,7 +237,7 @@
   line-height: 1;
 }
 .header-actions .cart-button.is-active {
-  color: #2f684a;
+  color: var(--store-brand);
 }
 .store-popover {
   position: fixed;
@@ -248,7 +248,7 @@
   padding: 17px;
   border: 1px solid #e4dccb;
   border-radius: 15px;
-  background: #fffdf7;
+  background: var(--store-surface);
   box-shadow: 0 20px 55px #18291e30;
   inset-inline-start: auto;
   inset-inline-end: auto;
@@ -360,7 +360,7 @@
   border: 1px solid #e1d8c7;
   border-radius: 6px;
   background: #fffaf0;
-  color: #2f684a;
+  color: var(--store-brand);
   cursor: pointer;
 }
 .quantity-actions span {
@@ -395,7 +395,7 @@
   gap: 8px;
   border: 0;
   border-radius: 8px;
-  background: #2f684a;
+  background: var(--store-brand);
   color: white;
   font-size: 10px;
   font-weight: 700;
@@ -519,7 +519,7 @@
     padding: 8px;
     border: 1px solid #e6decc;
     border-radius: 12px;
-    background: #fffdf7;
+    background: var(--store-surface);
     box-shadow: 0 18px 40px #1b30222b;
   }
   .main-navigation.is-open {

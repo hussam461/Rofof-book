@@ -30,32 +30,32 @@
 
 /* Book action placement. */
 .book-actions.book-actions-stack {
+  position: absolute;
+  top: 8px;
+  right: auto;
+  bottom: auto;
+  left: -5px;
   display: block;
-  width: 37px;
-  height: 82px;
-  gap: 0;
+  width: 30px;
+  height: 66px;
 }
 .book-actions-stack .favorite-book,
 .book-actions-stack .quick-add {
   position: absolute;
+  inset: auto;
   left: 0;
-  right: auto;
-  width: 37px;
-  height: 37px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
   margin: 0;
+  padding: 0;
 }
 .book-actions-stack .favorite-book {
   top: 0;
-  bottom: auto;
-  order: initial;
 }
 .book-actions-stack .quick-add {
-  top: 45px;
-  bottom: auto;
-  order: initial;
-}
-.book-actions-stack .quick-add > svg {
-  transform: translateX(4px);
+  top: 32px;
 }
 .book-actions-stack .favorite-book,
 .book-actions-stack .quick-add {
@@ -90,6 +90,6 @@
     height: 31px;
   }
   .book-actions-stack .quick-add {
-    top: 37px;
+    top: 33px;
   }
 }

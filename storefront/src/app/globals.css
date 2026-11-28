@@ -1,9 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+
+/* Foundation tokens, base rules, and shared storefront utilities. */
 @import "./styles/storefront-foundation.css";
+
+/* Brand identity and primary navigation. */
 @import "./styles/storefront-identity.css";
 @import "./styles/storefront-header.css";
+
+/* Storefront content and interaction layers. */
 @import "./styles/category-carousel.css";
 @import "./styles/book-catalog.css";
 @import "./styles/book-actions.css";

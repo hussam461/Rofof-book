@@ -45,13 +45,16 @@
 }
 
 :root {
-  --background: #f6f2e8;
+  --store-brand: #2f684a;
+  --store-surface: #fffdf7;
+  --store-canvas: #f6f2e8;
+  --background: var(--store-canvas);
   --foreground: #1c302d;
-  --card: #fffdf7;
+  --card: var(--store-surface);
   --card-foreground: #1c302d;
-  --popover: #fffdf7;
+  --popover: var(--store-surface);
   --popover-foreground: #1c302d;
-  --primary: #2f684a;
+  --primary: var(--store-brand);
   --primary-foreground: #fff;
   --secondary: #edf3ef;
   --secondary-foreground: #365340;
@@ -62,8 +65,8 @@
   --destructive: #bb4444;
   --border: #e7e1d5;
   --input: #e7e1d5;
-  --ring: #2f684a;
-  --chart-1: #2f684a;
+  --ring: var(--store-brand);
+  --chart-1: var(--store-brand);
   --chart-2: #c29a41;
   --chart-3: #567c91;
   --chart-4: #b77564;
@@ -71,12 +74,12 @@
   --radius: 0.75rem;
   --sidebar: #fff;
   --sidebar-foreground: #1c302d;
-  --sidebar-primary: #2f684a;
+  --sidebar-primary: var(--store-brand);
   --sidebar-primary-foreground: #fff;
   --sidebar-accent: #edf3ef;
   --sidebar-accent-foreground: #365340;
   --sidebar-border: #e3e9e5;
-  --sidebar-ring: #2f684a;
+  --sidebar-ring: var(--store-brand);
 }
 
 @layer base {
@@ -107,7 +110,7 @@
 .storefront {
   overflow-x: clip;
   overflow-y: visible;
-  background: #f6f2e8;
+  background: var(--store-canvas);
 }
 .shell {
   width: min(1180px, calc(100% - 56px));
@@ -150,7 +153,7 @@
   place-items: center;
   border-radius: 14px 14px 14px 5px;
   color: #fff;
-  background: #2f684a;
+  background: var(--store-brand);
   box-shadow: 0 5px 14px #2f684a26;
 }
 .brand-copy {
@@ -175,15 +178,12 @@
   gap: 8px;
   text-decoration: none;
   font-size: 11px;
-  color: #475950;
+  color: #fff;
   white-space: nowrap;
-}
-.cart-button {
   height: 42px;
   padding: 0 15px;
   border-radius: 8px;
-  color: #fff;
-  background: #2f684a;
+  background: var(--store-brand);
   font-weight: 700;
 }
 .cart-button:hover {
@@ -194,25 +194,22 @@
   align-items: center;
   gap: 8px;
   color: #8a7747;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 750;
   letter-spacing: .025em;
-}
-.section-heading h2 em {
-  font-style: normal;
-  color: #467552;
 }
 .text-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #45614d;
+  padding-bottom: 4px;
+  color: #62776d;
   text-decoration: none;
   font-size: 11px;
   font-weight: 700;
 }
 .text-link:hover {
-  color: #2f684a;
+  color: var(--store-brand);
 }
 .section {
   padding-block: 65px 67px;
@@ -228,22 +225,12 @@
   flex-direction: column;
   gap: 7px;
 }
-.section-kicker {
-  font-size: 9px;
-}
 .section-heading h2 {
   margin: 0;
   color: #294335;
   font-size: 25px;
   font-weight: 800;
   letter-spacing: -.04em;
-}
-.section-heading h2 em {
-  color: #467552;
-}
-.text-link {
-  padding-bottom: 4px;
-  color: #62776d;
 }
 .category-grid {
   display: grid;
@@ -260,7 +247,7 @@
   color: #3f554b;
   border: 1px solid #e8ede9;
   border-radius: 11px;
-  background: #fffdf7;
+  background: var(--store-surface);
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 .category-card:hover {
@@ -283,14 +270,14 @@
   height: 34px;
   border: 1px solid #dfe7e2;
   border-radius: 50%;
-  background: #fffdf7;
+  background: var(--store-surface);
   color: #45614d;
   cursor: pointer;
   transition: color .18s ease, background .18s ease, border-color .18s ease;
 }
 .carousel-controls button:hover {
-  border-color: #2f684a;
-  background: #2f684a;
+  border-color: var(--store-brand);
+  background: var(--store-brand);
   color: #fff;
 }
 .category-slide {
@@ -337,7 +324,7 @@
   line-height: 1.6;
 }
 .category-slide:hover .category-slide-title {
-  color: #2f684a;
+  color: var(--store-brand);
 }
 .featured-section {
   padding-block: 58px 64px;
@@ -356,7 +343,7 @@
   overflow: hidden;
   border: 1px solid #e7ece8;
   border-radius: 11px;
-  background: #fffdf7;
+  background: var(--store-surface);
   transition: transform .2s ease, box-shadow .2s ease;
 }
 .book-card:hover {
@@ -424,13 +411,13 @@
   height: 35px;
   border: 1px solid #e4eae5;
   border-radius: 8px;
-  background: #fffdf7;
-  color: #2f684a;
+  background: var(--store-surface);
+  color: var(--store-brand);
   cursor: pointer;
 }
 .quick-add:hover {
   color: #fff;
-  background: #2f684a;
+  background: var(--store-brand);
 }
 .book-info {
   padding: 13px 14px 16px;
@@ -464,7 +451,7 @@
   gap: 8px;
 }
 .price-row strong {
-  color: #2f684a;
+  color: var(--store-brand);
   font-size: 13px;
 }
 .price-row strong small {
@@ -477,7 +464,7 @@
 }
 .site-footer {
   border-top: 1px solid #e8ede9;
-  background: #fffdf7;
+  background: var(--store-surface);
 }
 .footer-main {
   min-height: 83px;

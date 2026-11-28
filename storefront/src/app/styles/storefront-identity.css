@@ -68,7 +68,7 @@
   letter-spacing: -.04em;
 }
 .category-title-wrap h2 em {
-  color: #2f684a;
+  color: var(--store-brand);
   font-style: normal;
 }
 .category-title-wrap p {
@@ -97,7 +97,7 @@
   overflow: hidden;
   border: 1px solid #e9dfcc;
   border-radius: 22px;
-  background: #fffdf7;
+  background: var(--store-surface);
   color: #173e2f;
   box-shadow: 0 5px 14px #42371a0c, inset 0 1px 0 #ffffff;
   text-align: center;
@@ -160,7 +160,7 @@
   place-items: center;
   border-radius: 50%;
   background: #d3a251;
-  color: #fffdf7;
+  color: var(--store-surface);
   transition: transform .2s ease, background .2s ease;
 }
 .category-card:hover .category-card-arrow {
@@ -184,8 +184,8 @@
   color: #28543d;
 }
 .category-controls button:hover:not(:disabled) {
-  border-color: #2f684a;
-  background: #2f684a;
+  border-color: var(--store-brand);
+  background: var(--store-brand);
   color: #fff;
 }
 .category-controls button:disabled {

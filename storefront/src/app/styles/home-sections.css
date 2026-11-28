@@ -19,7 +19,7 @@
   align-items: flex-end;
   margin-bottom: 26px;
 }
-.shelf-heading > div {
+.shelf-heading-copy {
   gap: 5px;
 }
 .shelf-heading h2 {
@@ -35,6 +35,18 @@
 .shelf-section .books-grid {
   margin-inline: auto;
 }
+.shelf-heading-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  flex-direction: row;
+  gap: 12px;
+  direction: ltr;
+}
+.shelf-heading-actions .text-link {
+  direction: rtl;
+  white-space: nowrap;
+}
 
 @media (max-width: 600px) {
   .shelf-section {
@@ -45,19 +57,28 @@
   }
   .shelf-heading {
     align-items: flex-start;
-    gap: 13px;
+    gap: 8px;
     margin-bottom: 18px;
+  }
+  .shelf-heading-copy {
+    min-width: 0;
+    flex: 1 1 auto;
+    align-items: flex-start;
+    text-align: right;
   }
   .shelf-heading h2 {
     font-size: 21px;
   }
   .shelf-heading p {
-    max-width: 265px;
+    max-width: 100%;
     font-size: 9px;
   }
-  .shelf-heading .text-link {
-    flex: 0 0 auto;
-    padding-top: 6px;
+  .shelf-heading-actions {
+    gap: 8px;
+    padding-top: 2px;
+  }
+  .shelf-heading-actions .text-link {
+    padding-top: 0;
   }
 }
 
