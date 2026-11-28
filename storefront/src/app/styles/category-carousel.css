@@ -1,0 +1,120 @@
+/* Category carousel and responsive controls. */
+.category-toolbar {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  direction: ltr;
+}
+.category-controls {
+  position: static;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  direction: ltr;
+}
+.category-controls button {
+  width: 36px;
+  height: 36px;
+}
+.category-controls > span {
+  min-width: 36px;
+  padding-inline: 2px;
+  color: #68776d;
+  font-size: 10px;
+  text-align: center;
+}
+.category-card {
+  min-height: 0;
+  gap: 13px;
+  padding: 14px 9px 10px;
+  overflow: visible;
+}
+.category-medallion {
+  width: clamp(64px, 9vw, 108px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  flex: 0 0 auto;
+}
+.category-medallion svg {
+  width: 42%;
+  height: 42%;
+}
+.category-card-bottom {
+  position: relative;
+  min-height: 32px;
+  flex: 0 0 auto;
+  justify-content: center;
+  padding: 0 25px;
+}
+.category-slide-title {
+  font-size: clamp(10px, 1vw, 12px);
+}
+.category-card-arrow {
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  width: 25px;
+  height: 25px;
+}
+
+@media (max-width: 600px) {
+  .category-toolbar {
+    min-height: 36px;
+    margin-bottom: 12px;
+  }
+  .category-controls {
+    gap: 5px;
+  }
+  .category-controls button {
+    width: 32px;
+    height: 32px;
+  }
+  .category-controls > span {
+    min-width: 31px;
+    font-size: 9px;
+  }
+  .category-card {
+    min-height: 0;
+    gap: 10px;
+    padding: 12px 7px 9px;
+    border-radius: 17px;
+  }
+  .category-medallion {
+    width: clamp(58px, 13vw, 76px);
+    box-shadow: 0 0 0 3px #f4eee1, 0 0 0 4px #ddc796, 0 5px 12px #253b2c22;
+  }
+  .category-card-bottom {
+    min-height: 32px;
+    padding-inline: 20px;
+  }
+  .category-slide-title {
+    font-size: 10px;
+  }
+  .category-card-arrow {
+    width: 22px;
+    height: 22px;
+  }
+  .category-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-card {
+    animation: none;
+    transition: none;
+  }
+  .category-card:hover {
+    transform: none;
+  }
+}
+@media (min-width: 450px) and (max-width: 600px) {
+  .category-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

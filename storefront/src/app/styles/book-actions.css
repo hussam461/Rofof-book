@@ -1,0 +1,95 @@
+/* Book cover hover interaction. */
+.book-cover-wrap::before {
+  display: none;
+}
+.book-cover-wrap .book-cover,
+.book-cover-wrap .literary-cover-image {
+  transform-origin: center;
+  transition: transform 3.5s cubic-bezier(.2, .65, .25, 1);
+}
+.book-cover-wrap:hover .book-cover,
+.book-cover-wrap:focus-within .book-cover,
+.book-cover-wrap:hover .literary-cover-image,
+.book-cover-wrap:focus-within .literary-cover-image {
+  filter: none !important;
+  transform: scale(1.1);
+}
+.book-cover-wrap .book-actions {
+  z-index: 2;
+}
+
+@media (hover: none), (max-width: 600px) {
+  .book-cover-wrap:hover .book-cover,
+  .book-cover-wrap:focus-within .book-cover,
+  .book-cover-wrap:hover .literary-cover-image,
+  .book-cover-wrap:focus-within .literary-cover-image {
+    filter: none;
+    transform: none;
+  }
+}
+
+/* Book action placement. */
+.book-actions.book-actions-stack {
+  display: block;
+  width: 37px;
+  height: 82px;
+  gap: 0;
+}
+.book-actions-stack .favorite-book,
+.book-actions-stack .quick-add {
+  position: absolute;
+  left: 0;
+  right: auto;
+  width: 37px;
+  height: 37px;
+  margin: 0;
+}
+.book-actions-stack .favorite-book {
+  top: 0;
+  bottom: auto;
+  order: initial;
+}
+.book-actions-stack .quick-add {
+  top: 45px;
+  bottom: auto;
+  order: initial;
+}
+.book-actions-stack .quick-add > svg {
+  transform: translateX(4px);
+}
+.book-actions-stack .favorite-book,
+.book-actions-stack .quick-add {
+  border-color: transparent;
+  background: transparent !important;
+  box-shadow: none;
+  backdrop-filter: none;
+  filter: drop-shadow(0 1px 2px #0009);
+}
+.book-actions-stack .favorite-book {
+  color: #fffaf0;
+}
+.book-actions-stack .favorite-book.is-favorite,
+.book-actions-stack .favorite-book.is-favorite:hover {
+  color: #d94f45;
+}
+.book-actions-stack .quick-add {
+  color: #fffaf0;
+}
+.book-actions-stack .favorite-book:hover,
+.book-actions-stack .quick-add:hover {
+  background: transparent !important;
+  color: #e7c16e;
+}
+@media (max-width: 600px) {
+  .book-actions.book-actions-stack {
+    width: 31px;
+    height: 68px;
+  }
+  .book-actions-stack .favorite-book, .book-actions-stack .quick-add {
+    width: 31px;
+    height: 31px;
+  }
+  .book-actions-stack .quick-add {
+    top: 37px;
+  }
+}
