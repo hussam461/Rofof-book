@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Star } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { BookActions } from "@/components/book-actions";
 
 type ShelfBook = {
@@ -27,12 +27,42 @@ const priceFormatter = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
-const booksPerPage = 4;
-
 export function BookShelf({ id, title, accent, description, books, tone }: BookShelfProps) {
+  const desktopBooksPerPage = Math.min(Math.max(books.length, 4), 6);
   const [page, setPage] = useState(0);
+  const [booksPerPage, setBooksPerPage] = useState(desktopBooksPerPage);
+  const touchStartX = useRef<number | null>(null);
+
+  useEffect(() => {
+    const mobileViewport = window.matchMedia("(max-width: 600px)");
+    const updateBooksPerPage = () => {
+      setBooksPerPage(mobileViewport.matches ? 2 : desktopBooksPerPage);
+      setPage(0);
+    };
+
+    updateBooksPerPage();
+    mobileViewport.addEventListener("change", updateBooksPerPage);
+    return () => mobileViewport.removeEventListener("change", updateBooksPerPage);
+  }, [desktopBooksPerPage]);
+
   const pageCount = Math.ceil(books.length / booksPerPage);
   const visibleBooks = books.slice(page * booksPerPage, (page + 1) * booksPerPage);
+
+  function handleTouchEnd(event: TouchEvent<HTMLDivElement>) {
+    const startX = touchStartX.current;
+    touchStartX.current = null;
+    if (startX === null) return;
+
+    const endX = event.changedTouches[0]?.clientX;
+    if (endX === undefined) return;
+
+    const swipeDistance = endX - startX;
+    if (swipeDistance < -48) {
+      setPage((current) => Math.min(current + 1, pageCount - 1));
+    } else if (swipeDistance > 48) {
+      setPage((current) => Math.max(current - 1, 0));
+    }
+  }
 
   return (
     <section className={`featured-section shelf-section ${tone}`} id={id} aria-labelledby={`${id}-heading`}>
@@ -54,7 +84,13 @@ export function BookShelf({ id, title, accent, description, books, tone }: BookS
             <a className="text-link" href={`#${id}-grid`}>عرض الكل</a>
           </div>
         </div>
-        <div className="books-grid" id={`${id}-grid`}>
+        <div
+          className={`books-grid${books.length > 4 ? " shelf-books-grid--six" : ""}`}
+          id={`${id}-grid`}
+          onTouchStart={(event) => { touchStartX.current = event.changedTouches[0]?.clientX ?? null; }}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={() => { touchStartX.current = null; }}
+        >
           {visibleBooks.map((book) => (
             <article className="book-card" key={`${id}-${book.id}`}>
               <div className={`book-cover-wrap${book.coverImage ? " literary-cover" : ""}`}>

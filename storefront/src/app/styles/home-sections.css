@@ -35,6 +35,11 @@
 .shelf-section .books-grid {
   margin-inline: auto;
 }
+@media (min-width: 901px) {
+  .shelf-section .shelf-books-grid--six {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
 .shelf-heading-actions {
   display: flex;
   flex: 0 0 auto;
@@ -47,6 +52,25 @@
   direction: rtl;
   white-space: nowrap;
 }
+.shelf-carousel-controls {
+  gap: 7px;
+}
+.shelf-carousel-controls button {
+  width: 36px;
+  height: 36px;
+  border-color: #ddcfad;
+  background: #fffaf0;
+  color: #28543d;
+}
+.shelf-carousel-controls button:hover:not(:disabled) {
+  border-color: var(--store-brand);
+  background: var(--store-brand);
+  color: #fff;
+}
+.shelf-carousel-controls button:disabled {
+  cursor: not-allowed;
+  opacity: .42;
+}
 
 @media (max-width: 600px) {
   .shelf-section {
@@ -54,6 +78,13 @@
   }
   .shelf-section .shell {
     width: calc(100% - 32px);
+  }
+  /* Keep the first mobile page stable before the responsive batch size hydrates. */
+  .shelf-section .books-grid > .book-card:nth-child(n + 3) {
+    display: none;
+  }
+  .shelf-section .books-grid {
+    touch-action: pan-y;
   }
   .shelf-heading {
     align-items: flex-start;
@@ -76,6 +107,13 @@
   .shelf-heading-actions {
     gap: 8px;
     padding-top: 2px;
+  }
+  .shelf-carousel-controls {
+    gap: 5px;
+  }
+  .shelf-carousel-controls button {
+    width: 32px;
+    height: 32px;
   }
   .shelf-heading-actions .text-link {
     padding-top: 0;
